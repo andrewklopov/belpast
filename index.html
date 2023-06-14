@@ -9,9 +9,6 @@
         <link rel="stylesheet" href="https://unpkg.com/leaflet@0.7.5/dist/leaflet.css" />
         <script src="https://unpkg.com/leaflet@0.7.5/dist/leaflet.js"></script>
 		
-		<!-- Leaflet Omnivore -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-omnivore/0.4.7/leaflet-omnivore.min.js"></script>
-		
 		<style>
     body { margin:0; padding:0; }
     body, table, tr, td, th, div, h1, h2, input { font-family: "Calibri", "Trebuchet MS", "Ubuntu", Serif; font-size: 11pt; }
@@ -60,13 +57,11 @@
     }
 
 	@media only screen and (max-width: 600px) {
-		/* скрываем заголовок */
-		.title {
+	.title {
 			display: none;
 		}
 
-		/* блок about project теперь в самом вверху экрана */
-		.about-project {
+	.about-project {
 			position: absolute;
 			top: 10px;
 			padding-left: 10px;
@@ -76,23 +71,21 @@
 			margin: auto;
 		}
 
-		/* блок controls теперь находится ниже about project с небольшим отступом */
-		#controls {
+	#controls {
 			position: absolute;
-			top: 50px; /* это значение может потребовать корректировки в зависимости от размера about project */
+			top: 50px;
 			left: 10px;
 			right: 10px;
 		}
 
-		/* блок sliderContainer теперь находится ниже controls с небольшим отступом */
-		#sliderContainer {
+	#sliderContainer {
 			position: absolute;
-			top: 100px; /* это значение может потребовать корректировки в зависимости от размера controls */
+			top: 100px; 
 			left: 10px;
 			right: 10px;
 		}
 		
-		    .collapsible {
+	.collapsible {
         position: relative;
         top: calc(100% + 20px);
         left: 0px;
@@ -109,7 +102,7 @@
 	}
 
 
-    .collapsible {
+	.collapsible {
         position: relative;
         top: calc(100% + 20px);
         right: -200px;
@@ -179,7 +172,24 @@
 <script>
 
 	// Base layers
-	var osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors', minZoom: 1, maxZoom: 16});
+	var mapboxTiles = L.tileLayer('https://api.mapbox.com/styles/v1/aklopau/clircbjyt007o01p71n840k4r/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYWtsb3BhdSIsImEiOiJjbGR0Z2VnMHIyNW4wM29xZzAyMnZtb2w2In0.5F1q7z929-hQX7-9mbfIuw', {
+		tileSize: 512,
+		zoomOffset: -1,
+		attribution: '© <a href="https://www.mapbox.com/feedback/">Mapbox</a> | <a href="https://www.openstreetmap.org/about/">OpenStreetMap</a> contributors'
+	});
+
+	// Map
+	var map = L.map('map', {
+		center: [53.554, 28.052],
+		zoom: 5.9,
+		minZoom: 1,
+		maxZoom: 16,
+		layers: [mapboxTiles],
+		zoomControl: false
+	});
+
+	// Add of layer control
+	mapboxTiles.addTo(map);
 
 	// Overlay layers (TMS)
 
@@ -312,23 +322,6 @@
 	var turau_1943 = L.tileLayer('./imagery/turau_1943/{z}/{x}/{y}.png', {tms: 1, opacity: 1, attribution: "", minZoom: 1, maxZoom: 16});
 
 
-
-
-
-	// Map
-	var map = L.map('map', {
-		center: [53.1449970256778, 25.448464946095765],
-		zoom: 10,
-		minZoom: 1,
-		maxZoom: 16,
-		layers: [osm],
-		zoomControl: false
-	});
-	
-	L.control.zoom({
-		position: 'bottomleft'  // 'topleft', 'topright', 'bottomleft' or 'bottomright'
-	}).addTo(map);
-
 	// Title
 	var title = L.control();
 	title.onAdd = function(map) {
@@ -343,6 +336,8 @@
 
 	// Fit to overlay bounds (SW and NE points with (lat, lon))
 	map.fitBounds([[47.616300056188734, 33.13424593848343], [58.67369399516687, 17.7626839537081]]);
+	
+	//Create a variables with links to maps
 
         var maps = {
             "belarus": {
@@ -572,32 +567,33 @@
 		};
 		
 		
-			// GeoJSON layer with Belarus border
-			var borderLayer = L.geoJson(null, {
-				style: {
-					color: "red",
-					weight: 4,
-					opacity: 1,
-					fill: false
-				},
-				// Load border data from GeoJSON file
-				onEachFeature: function(feature, layer) {
-					layer.bindPopup("<strong>" + feature.properties.name + "</strong>");
-				}
+		// GeoJSON layer with Belarus border
+		var borderLayer = L.geoJson(null, {
+			style: {
+				color: "red",
+				weight: 4,
+				opacity: 1,
+				fill: false
+			},
+		// Load border data from GeoJSON file
+		onEachFeature: function(feature, layer) {
+			layer.bindPopup("<strong>" + feature.properties.name + "</strong>");
+		}
+		});
+		
+		// Load border data from GeoJSON file
+		var borderData = "./border.geojson";
+		fetch(borderData)
+			.then(function(response) {
+				return response.json();
+			})
+			.then(function(data) {
+				borderLayer.addData(data);
+				// Add border layer to the map
+				borderLayer.addTo(map);
+				// Adjust map bounds to show the border layer
+				map.fitBounds(borderLayer.getBounds());
 			});
-			// Load border data from GeoJSON file
-			var borderData = "./border.geojson";
-			fetch(borderData)
-				.then(function(response) {
-					return response.json();
-				})
-				.then(function(data) {
-					borderLayer.addData(data);
-					// Add border layer to the map
-					borderLayer.addTo(map);
-					// Adjust map bounds to show the border layer
-					map.fitBounds(borderLayer.getBounds());
-				});
 
 		function populateSelects() {
 			var mapTypeSelect = document.getElementById('mapTypeSelect');
@@ -763,4 +759,3 @@
 
 </body>
 </html>
-
