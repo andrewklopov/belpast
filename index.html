@@ -1,148 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' />
-        <title>BELARUS OLD MAPS</title>
+	<head>
+		<meta charset="utf-8">
+		<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' />
+		<title>BELARUS OLD MAPS</title>
 
-        <!-- Leaflet -->
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@0.7.5/dist/leaflet.css" />
-        <script src="https://unpkg.com/leaflet@0.7.5/dist/leaflet.js"></script>
-		
-		<style>
-    body { margin:0; padding:0; }
-    body, table, tr, td, th, div, h1, h2, input { font-family: "Calibri", "Trebuchet MS", "Ubuntu", Serif; font-size: 11pt; }
-    #map { position:absolute; top:0; bottom:0; width:100%; } /* full size */
-    .ctl {
-        padding: 2px 10px 2px 10px;
-        background: white;
-        background: rgba(255,255,255,0.9);
-        box-shadow: 0 0 15px rgba(0,0,0,0.2);
-        border-radius: 5px;
-        text-align: right;
-    }
-    .title {
-        font-size: 18pt;
-        font-weight: bold;
-    }
-    .src {
-        font-size: 10pt;
-    }
-    #controls, #sliderContainer {
-        box-sizing: border-box;
-        margin-bottom: 30px;
-    }
-    #controls {
-        position: absolute;
-        left: 10px;
-        top: 10px;
-        z-index: 1000;
-        background: white;
-        padding: 10px;
-        border-radius: 3px;
-        box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-    }
-    #sliderContainer {
-        position: absolute;
-        left: 10px;
-        top: 60px;
-        z-index: 1000;
-    }
-    .about-project {
-        position: absolute;
-        top: 60px;
-        right: 10px;
-        z-index: 1000;
-        width: 400px;
-    }
+		<!-- Leaflet -->
+		<link rel="stylesheet" href="https://unpkg.com/leaflet@0.7.5/dist/leaflet.css" />
+		<script src="https://unpkg.com/leaflet@0.7.5/dist/leaflet.js"></script>
 
-	@media only screen and (max-width: 600px) {
-	.title {
-			display: none;
-		}
+		<!-- Leaflet Omnivore -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-omnivore/0.4.7/leaflet-omnivore.min.js"></script>
 
-	.about-project {
-			position: absolute;
-			top: 10px;
-			padding-left: 10px;
-			right: 10px;
-			height: auto;
-			width: auto;
-			margin: auto;
-		}
-
-	#controls {
-			position: absolute;
-			top: 50px;
-			left: 10px;
-			right: 10px;
-		}
-
-	#sliderContainer {
-			position: absolute;
-			top: 100px; 
-			left: 10px;
-			right: 10px;
-		}
-		
-	.collapsible {
-        position: relative;
-        top: calc(100% + 20px);
-        left: 0px;
-        cursor: pointer;
-        width: 200px;
-        border: none;
-        outline: none;
-        text-align: left;
-        padding: 10px;
-        background-color: #f1f1f1;
-        border-radius: 5px;
-        margin-bottom: 10px;
-    }
-	}
-
-
-	.collapsible {
-        position: relative;
-        top: calc(100% + 20px);
-        right: -200px;
-        cursor: pointer;
-        width: 200px;
-        border: none;
-        outline: none;
-        text-align: left;
-        padding: 10px;
-        background-color: #f1f1f1;
-        border-radius: 5px;
-        margin-bottom: 10px;
-    }
-
-    .content {
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.2s ease-out;
-        background-color: #f1f1f1;
-        border-radius: 5px;
-        padding: 0 18px;
-    }
-
-    .collapsible:after {
-        content: '\02795';
-        float: right;
-    }
-
-    .collapsible.active:after {
-        content: "\2796";
-    }
-
-    .email-link {
-        color: blue;
-        text-decoration: underline;
-    }
-</style>
-
-
+		<link rel="stylesheet" href="css/main.css">
 </head>
+
+
 <body>
 <div id="map"></div>
 <div id="controls">
@@ -172,24 +45,7 @@
 <script>
 
 	// Base layers
-	var mapboxTiles = L.tileLayer('https://api.mapbox.com/styles/v1/aklopau/clircbjyt007o01p71n840k4r/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYWtsb3BhdSIsImEiOiJjbGR0Z2VnMHIyNW4wM29xZzAyMnZtb2w2In0.5F1q7z929-hQX7-9mbfIuw', {
-		tileSize: 512,
-		zoomOffset: -1,
-		attribution: '© <a href="https://www.mapbox.com/feedback/">Mapbox</a> | <a href="https://www.openstreetmap.org/about/">OpenStreetMap</a> contributors'
-	});
-
-	// Map
-	var map = L.map('map', {
-		center: [53.554, 28.052],
-		zoom: 5.9,
-		minZoom: 1,
-		maxZoom: 16,
-		layers: [mapboxTiles],
-		zoomControl: false
-	});
-
-	// Add of layer control
-	mapboxTiles.addTo(map);
+	var osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors', minZoom: 1, maxZoom: 16});
 
 	// Overlay layers (TMS)
 
@@ -322,6 +178,23 @@
 	var turau_1943 = L.tileLayer('./imagery/turau_1943/{z}/{x}/{y}.png', {tms: 1, opacity: 1, attribution: "", minZoom: 1, maxZoom: 16});
 
 
+
+
+
+	// Map
+	var map = L.map('map', {
+		center: [53.1449970256778, 25.448464946095765],
+		zoom: 10,
+		minZoom: 1,
+		maxZoom: 16,
+		layers: [osm],
+		zoomControl: false
+	});
+	
+	L.control.zoom({
+		position: 'bottomleft'  // 'topleft', 'topright', 'bottomleft' or 'bottomright'
+	}).addTo(map);
+
 	// Title
 	var title = L.control();
 	title.onAdd = function(map) {
@@ -336,8 +209,6 @@
 
 	// Fit to overlay bounds (SW and NE points with (lat, lon))
 	map.fitBounds([[47.616300056188734, 33.13424593848343], [58.67369399516687, 17.7626839537081]]);
-	
-	//Create a variables with links to maps
 
         var maps = {
             "belarus": {
@@ -567,33 +438,32 @@
 		};
 		
 		
-		// GeoJSON layer with Belarus border
-		var borderLayer = L.geoJson(null, {
-			style: {
-				color: "red",
-				weight: 4,
-				opacity: 1,
-				fill: false
-			},
-		// Load border data from GeoJSON file
-		onEachFeature: function(feature, layer) {
-			layer.bindPopup("<strong>" + feature.properties.name + "</strong>");
-		}
-		});
-		
-		// Load border data from GeoJSON file
-		var borderData = "./border.geojson";
-		fetch(borderData)
-			.then(function(response) {
-				return response.json();
-			})
-			.then(function(data) {
-				borderLayer.addData(data);
-				// Add border layer to the map
-				borderLayer.addTo(map);
-				// Adjust map bounds to show the border layer
-				map.fitBounds(borderLayer.getBounds());
+			// GeoJSON layer with Belarus border
+			var borderLayer = L.geoJson(null, {
+				style: {
+					color: "red",
+					weight: 4,
+					opacity: 1,
+					fill: false
+				},
+				// Load border data from GeoJSON file
+				onEachFeature: function(feature, layer) {
+					layer.bindPopup("<strong>" + feature.properties.name + "</strong>");
+				}
 			});
+			// Load border data from GeoJSON file
+			var borderData = "./border.geojson";
+			fetch(borderData)
+				.then(function(response) {
+					return response.json();
+				})
+				.then(function(data) {
+					borderLayer.addData(data);
+					// Add border layer to the map
+					borderLayer.addTo(map);
+					// Adjust map bounds to show the border layer
+					map.fitBounds(borderLayer.getBounds());
+				});
 
 		function populateSelects() {
 			var mapTypeSelect = document.getElementById('mapTypeSelect');
@@ -759,3 +629,4 @@
 
 </body>
 </html>
+
