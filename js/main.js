@@ -2,11 +2,11 @@ import { LAYERS_IMAGERY, LAYERS_MAPS, LAYERS_PLACES } from "./layers.js";
 import { MAP_INITIAL_SETTINGS } from "/js/settings.js";
 
 // Base layers
-var osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', { attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors', minZoom: 1, maxZoom: 16 });
+const osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', { attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors', minZoom: 1, maxZoom: 16 });
 
 
 // Map
-var map = L.map('map', {
+const map = L.map('map', {
   ...MAP_INITIAL_SETTINGS,
   layers: [osm]
 });
@@ -16,7 +16,7 @@ L.control.zoom({
 }).addTo(map);
 
 // Title
-var title = L.control();
+const title = L.control();
 title.onAdd = function (map) {
   this._div = L.DomUtil.create('div', 'ctl title');
   this.update();
@@ -33,7 +33,7 @@ map.fitBounds([[47.616300056188734, 33.13424593848343], [58.67369399516687, 17.7
 
 
 // GeoJSON layer with Belarus border
-var borderLayer = L.geoJson(null, {
+const borderLayer = L.geoJson(null, {
   style: {
     color: "red",
     weight: 4,
@@ -47,7 +47,7 @@ var borderLayer = L.geoJson(null, {
 });
 
 // Load border data from GeoJSON file
-var borderData = "./border.geojson";
+const borderData = "./border.geojson";
 fetch(borderData)
   .then(function (response) {
     return response.json();
@@ -93,11 +93,11 @@ window.onload = function () {
 
 
 function populateSelects() {
-  var mapTypeSelect = document.getElementById('mapTypeSelect');
-  var mapTypes = ['Regions', 'Places', 'Imagery'];
+  const mapTypeSelect = document.getElementById('mapTypeSelect');
+  const mapTypes = ['Regions', 'Places', 'Imagery'];
 
   for (var i = 0; i < mapTypes.length; i++) {
-    var option = document.createElement('option');
+    const option = document.createElement('option');
     option.value = mapTypes[i];
     option.text = mapTypes[i];
     mapTypeSelect.add(option);
@@ -107,11 +107,11 @@ function populateSelects() {
 }
 
 function updateRegionOptions() {
-  var regionSelect = document.getElementById('regionSelect');
-  var mapType = document.getElementById('mapTypeSelect').value;
+  const regionSelect = document.getElementById('regionSelect');
+  const mapType = document.getElementById('mapTypeSelect').value;
   regionSelect.innerHTML = ''; // clear list of regions
 
-  var regions = {};
+  let regions = {};
   if (mapType === 'Regions') {
     regions = LAYERS_MAPS;
   } else if (mapType === 'Imagery') {
@@ -121,7 +121,7 @@ function updateRegionOptions() {
   }
 
   for (var region in regions) {
-    var option = document.createElement('option');
+    const option = document.createElement('option');
     option.value = region;
     option.text = region.charAt(0).toUpperCase() + region.slice(1);
     regionSelect.add(option);
@@ -129,13 +129,13 @@ function updateRegionOptions() {
 }
 
 function updateYearOptions() {
-  var regionSelect = document.getElementById('regionSelect');
-  var yearSelect = document.getElementById('yearSelect');
-  var mapType = document.getElementById('mapTypeSelect').value;
+  const regionSelect = document.getElementById('regionSelect');
+  const yearSelect = document.getElementById('yearSelect');
+  const mapType = document.getElementById('mapTypeSelect').value;
   yearSelect.innerHTML = '';
-  var region = regionSelect.value;
+  const region = regionSelect.value;
 
-  var regions = {};
+  let regions = {};
   if (mapType === 'Regions') {
     regions = LAYERS_MAPS;
   } else if (mapType === 'Imagery') {
@@ -152,7 +152,7 @@ function updateYearOptions() {
   })
 
   sorted.forEach(([year, layerSettings]) => {
-    var option = document.createElement('option');
+    const option = document.createElement('option');
     option.value = year;
     option.text = year;
     yearSelect.add(option);
@@ -164,13 +164,13 @@ function updateYearOptions() {
 }
 
 function changeMap() {
-  var regionSelect = document.getElementById('regionSelect');
-  var yearSelect = document.getElementById('yearSelect');
-  var mapTypeSelect = document.getElementById('mapTypeSelect');
-  var region = regionSelect.value;
-  var year = yearSelect.value;
-  var mapType = mapTypeSelect.value;
-  var opacity = document.getElementById('opacitySlider').value;
+  const regionSelect = document.getElementById('regionSelect');
+  const yearSelect = document.getElementById('yearSelect');
+  const mapTypeSelect = document.getElementById('mapTypeSelect');
+  const region = regionSelect.value;
+  const year = yearSelect.value;
+  const mapType = mapTypeSelect.value;
+  const opacity = document.getElementById('opacitySlider').value;
 
   // clearing of all layers
   for (var r in LAYERS_MAPS) {
@@ -189,7 +189,7 @@ function changeMap() {
     }
   }
 
-  var layers = {};
+  let layers = {};
   if (mapType === 'Regions') {
     layers = LAYERS_MAPS;
   } else if (mapType === 'Imagery') {
